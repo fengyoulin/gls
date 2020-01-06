@@ -8,6 +8,8 @@ import (
 
 // Cache is the gls cache interface
 type Cache interface {
+	// All returns all the key/values in current goroutine's local storage
+	All() (kvs map[string]interface{}, ok bool)
 	// Clr clears the current goroutine's local storage
 	Clr()
 	// Del deletes a key in current goroutine's local storage
@@ -21,6 +23,24 @@ type Cache interface {
 type single struct {
 	lock sync.RWMutex
 	data map[int64]map[string]interface{}
+}
+
+func (s *single) All() (kvs map[string]interface{}, ok bool) {
+	var m map[string]interface{}
+	s.lock.RLock()
+	m, ok = s.data[goid.ID()]
+	s.lock.RUnlock()
+	if !ok {
+		return
+	}
+	if len(m) == 0 {
+		return
+	}
+	kvs = make(map[string]interface{})
+	for key, val := range m {
+		kvs[key] = val
+	}
+	return
 }
 
 func (s *single) Clr() {
@@ -63,6 +83,10 @@ func (s *single) Set(key string, val interface{}) {
 }
 
 type sharding []*single
+
+func (s *sharding) All() (kvs map[string]interface{}, ok bool) {
+	return s.shard().All()
+}
 
 func (s *sharding) Clr() {
 	s.shard().Clr()

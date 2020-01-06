@@ -48,6 +48,21 @@ func testCache(c Cache, t *testing.T) {
 		if s != str {
 			t.Errorf("key: %s has unexpected value: %s\n", str, s)
 		}
+		a, ok := c.All()
+		if !ok {
+			t.Errorf("get all key/values failed\n")
+		}
+		v, ok = a[str]
+		if !ok {
+			t.Errorf("key: %s not found\n", str)
+		}
+		s, ok = v.(string)
+		if !ok {
+			t.Errorf("key: %s has unexpected type: %T\n", str, v)
+		}
+		if s != str {
+			t.Errorf("key: %s has unexpected value: %s\n", str, s)
+		}
 		c.Del(str)
 		_, ok = c.Get(str)
 		if ok {

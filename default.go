@@ -6,6 +6,11 @@ func init() {
 	defaultCache = New(true)
 }
 
+// All returns all the key/values in current goroutine's local storage
+func All() (kvs map[string]interface{}, ok bool) {
+	return defaultCache.All()
+}
+
 // Clr clears the current goroutine's local storage
 func Clr() {
 	defaultCache.Clr()
