@@ -39,4 +39,4 @@ The example before uses the default gls cache, you can use the `gls.New()` funct
 
 **Attention:**
 
-You should always try to use `context.Context` as google suggested. If you prefer to use this `gls` module, remember to call the `Clr()` at end end of your goroutine, it will protect you from a memory leak.
+You should always try to use `context.Context` as google suggested. If you prefer to use this `gls` module, remember to call the `Clr()` at end of your goroutine, it will protect you from a memory leak.
