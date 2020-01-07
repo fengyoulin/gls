@@ -11,6 +11,11 @@ func All() (kvs map[string]interface{}, ok bool) {
 	return defaultCache.All()
 }
 
+// Put puts all the key/values into current goroutine's local storage
+func Put(kvs map[string]interface{}) {
+	defaultCache.Put(kvs)
+}
+
 // Clr clears the current goroutine's local storage
 func Clr() {
 	defaultCache.Clr()

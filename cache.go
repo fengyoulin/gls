@@ -10,6 +10,8 @@ import (
 type Cache interface {
 	// All returns all the key/values in current goroutine's local storage
 	All() (kvs map[string]interface{}, ok bool)
+	// Put puts all the key/values into current goroutine's local storage
+	Put(kvs map[string]interface{})
 	// Clr clears the current goroutine's local storage
 	Clr()
 	// Del deletes a key in current goroutine's local storage
@@ -41,6 +43,25 @@ func (s *single) All() (kvs map[string]interface{}, ok bool) {
 		kvs[key] = val
 	}
 	return
+}
+
+func (s *single) Put(kvs map[string]interface{}) {
+	if len(kvs) == 0 {
+		return
+	}
+	id := goid.ID()
+	s.lock.RLock()
+	m, ok := s.data[id]
+	s.lock.RUnlock()
+	if !ok {
+		m = make(map[string]interface{})
+		s.lock.Lock()
+		s.data[id] = m
+		s.lock.Unlock()
+	}
+	for key, val := range kvs {
+		m[key] = val
+	}
 }
 
 func (s *single) Clr() {
@@ -86,6 +107,10 @@ type sharding []*single
 
 func (s *sharding) All() (kvs map[string]interface{}, ok bool) {
 	return s.shard().All()
+}
+
+func (s *sharding) Put(kvs map[string]interface{}) {
+	s.shard().Put(kvs)
 }
 
 func (s *sharding) Clr() {

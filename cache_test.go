@@ -68,6 +68,23 @@ func testCache(c Cache, t *testing.T) {
 		if ok {
 			t.Errorf("key: %s should be deleted\n", str)
 		}
+		c.Put(a)
+		v, ok = c.Get(str)
+		if !ok {
+			t.Errorf("key: %s not found\n", str)
+		}
+		s, ok = v.(string)
+		if !ok {
+			t.Errorf("key: %s has unexpected type: %T\n", str, v)
+		}
+		if s != str {
+			t.Errorf("key: %s has unexpected value: %s\n", str, s)
+		}
+		c.Del(str)
+		_, ok = c.Get(str)
+		if ok {
+			t.Errorf("key: %s should be deleted\n", str)
+		}
 	}
 	c.Clr()
 }
