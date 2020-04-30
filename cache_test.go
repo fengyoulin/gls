@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"sync/atomic"
 	"testing"
-	"unsafe"
 )
 
 const counterStart = 123456789
@@ -168,11 +167,11 @@ func BenchmarkSharding_Clr(b *testing.B) {
 type atomicInteger int64
 
 func (a *atomicInteger) Set(val int64) {
-	atomic.StoreInt64((*int64)(unsafe.Pointer(a)), val)
+	atomic.StoreInt64((*int64)(a), val)
 }
 
 func (a *atomicInteger) Next() atomicInteger {
-	return atomicInteger(atomic.AddInt64((*int64)(unsafe.Pointer(a)), 1))
+	return atomicInteger(atomic.AddInt64((*int64)(a), 1))
 }
 
 func (a atomicInteger) String() string {

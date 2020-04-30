@@ -1,9 +1,11 @@
 package gls
 
+import "runtime"
+
 var defaultCache Cache
 
 func init() {
-	defaultCache = New(true)
+	defaultCache = New(runtime.NumCPU() > 1)
 }
 
 // All returns all the key/values in current goroutine's local storage

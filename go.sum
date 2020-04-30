@@ -1,4 +1,4 @@
-github.com/fengyoulin/goid v0.1.0 h1:Yz61SeA150A1nyM47xpEuUIMSMuew4kL13nJpnzr6dE=
-github.com/fengyoulin/goid v0.1.0/go.mod h1:5qF9KLULtgAj3gVk5nvloZy7PWsnlWA4k7qTgxqttdQ=
-github.com/fengyoulin/inspect v0.1.0 h1:jek5s+kLvnZAWnuH3rqNna1ut6FN3ikLfAjGkkD+y0Q=
-github.com/fengyoulin/inspect v0.1.0/go.mod h1:o2KHsj6QtTctaKSNT3PMixntV9Ayqvox2orlH7mk25E=
+github.com/fengyoulin/goid v0.1.1 h1:Vqp0iPKbqAJFr1bYJsmLRyJf7eOEOKiJwnClsLnNiUM=
+github.com/fengyoulin/goid v0.1.1/go.mod h1:JtJvzobmzf2oOFP3YC1OxIzFutOrfUM/77E7710my8E=
+github.com/fengyoulin/inspect v0.1.1 h1:p+8jX5PcGKQ6QgbAKv27iTztbDVaFrZO0ydTTHhmXDo=
+github.com/fengyoulin/inspect v0.1.1/go.mod h1:o2KHsj6QtTctaKSNT3PMixntV9Ayqvox2orlH7mk25E=
