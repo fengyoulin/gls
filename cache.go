@@ -71,11 +71,17 @@ func (s *single) Clr() {
 }
 
 func (s *single) Del(key string) {
+	id := goid.ID()
 	s.lock.RLock()
-	m, ok := s.data[goid.ID()]
+	m, ok := s.data[id]
 	s.lock.RUnlock()
 	if ok {
 		delete(m, key)
+		if len(m) == 0 {
+			s.lock.Lock()
+			delete(s.data, id)
+			s.lock.Unlock()
+		}
 	}
 }
 
