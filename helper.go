@@ -27,7 +27,6 @@ type arg struct {
 	ca Cache
 }
 
-//go:nosplit
 func newProc(fn func(), ls map[string]interface{}, ca Cache) {
 	fp := proc
 	sz := uint32(unsafe.Sizeof(arg{}))
@@ -39,7 +38,7 @@ func newProc(fn func(), ls map[string]interface{}, ca Cache) {
 		ca: ca,
 	}
 	np := newproc
-	reflectcall(nil, *(*unsafe.Pointer)(unsafe.Pointer(&np)), noescape(unsafe.Pointer(ag)), sz, sz)
+	reflectcall(nil, *(*unsafe.Pointer)(unsafe.Pointer(&np)), unsafe.Pointer(ag), sz, sz)
 }
 
 func proc(fn func(), ls map[string]interface{}, ca Cache) {
@@ -53,9 +52,3 @@ func newproc(siz int32, fn unsafe.Pointer)
 
 //go:linkname reflectcall runtime.reflectcall
 func reflectcall(argtype unsafe.Pointer, fn, arg unsafe.Pointer, argsize uint32, retoffset uint32)
-
-//go:nosplit
-func noescape(p unsafe.Pointer) unsafe.Pointer {
-	x := uintptr(p)
-	return unsafe.Pointer(x ^ 0)
-}

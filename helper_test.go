@@ -10,15 +10,19 @@ func TestGo(t *testing.T) {
 	Set("message", "here, gls!")
 	var wg sync.WaitGroup
 	wg.Add(limit)
+	var m sync.Map
 	fn := func() {
 		defer wg.Done()
 		ls, ok := All()
 		if !ok {
 			t.Error("local storage not found")
 		}
-		_, ok = ls["current"]
+		cu, ok := ls["current"]
 		if !ok {
 			t.Error(`"current" not found`)
+		}
+		if _, ok = m.LoadOrStore(cu, true); ok {
+			t.Errorf(`"current" duplicate: %v`, cu)
 		}
 		_, ok = ls["message"]
 		if !ok {
@@ -37,15 +41,19 @@ func TestGoWith(t *testing.T) {
 	Set("message", "here, gls!")
 	var wg sync.WaitGroup
 	wg.Add(limit)
+	var m sync.Map
 	fn := func() {
 		defer wg.Done()
 		ls, ok := All()
 		if !ok {
 			t.Error("local storage not found")
 		}
-		_, ok = ls["current"]
+		cu, ok := ls["current"]
 		if !ok {
 			t.Error(`"current" not found`)
+		}
+		if _, ok = m.LoadOrStore(cu, true); ok {
+			t.Errorf(`"current" duplicate: %v`, cu)
 		}
 		_, ok = ls["message"]
 		if ok {
