@@ -1,19 +1,20 @@
-package gls
+package gls_test
 
 import (
+	"github.com/fengyoulin/gls"
 	"sync"
 	"testing"
 )
 
 func TestGo(t *testing.T) {
 	const limit = 10
-	Set("message", "here, gls!")
+	gls.Set("message", "here, gls!")
 	var wg sync.WaitGroup
 	wg.Add(limit)
 	var m sync.Map
 	fn := func() {
 		defer wg.Done()
-		ls, ok := All()
+		ls, ok := gls.All()
 		if !ok {
 			t.Error("local storage not found")
 		}
@@ -30,21 +31,21 @@ func TestGo(t *testing.T) {
 		}
 	}
 	for i := 0; i < limit; i++ {
-		Set("current", i)
-		Go(fn, nil)
+		gls.Set("current", i)
+		gls.Go(fn, nil)
 	}
 	wg.Wait()
 }
 
 func TestGoWith(t *testing.T) {
 	const limit = 10
-	Set("message", "here, gls!")
+	gls.Set("message", "here, gls!")
 	var wg sync.WaitGroup
 	wg.Add(limit)
 	var m sync.Map
 	fn := func() {
 		defer wg.Done()
-		ls, ok := All()
+		ls, ok := gls.All()
 		if !ok {
 			t.Error("local storage not found")
 		}
@@ -61,7 +62,7 @@ func TestGoWith(t *testing.T) {
 		}
 	}
 	for i := 0; i < limit; i++ {
-		GoWith(fn, nil, map[string]interface{}{"current": i})
+		gls.GoWith(fn, nil, map[string]interface{}{"current": i})
 	}
 	wg.Wait()
 }

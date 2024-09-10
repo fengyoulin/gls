@@ -1,6 +1,7 @@
-package gls
+package gls_test
 
 import (
+	"github.com/fengyoulin/gls"
 	"strconv"
 	"sync/atomic"
 	"testing"
@@ -9,14 +10,14 @@ import (
 const counterStart = 123456789
 
 var (
-	singleCache   Cache
-	shardingCache Cache
+	singleCache   gls.Cache
+	shardingCache gls.Cache
 	counter       atomicInteger
 )
 
 func init() {
-	singleCache = New(false)
-	shardingCache = New(true)
+	singleCache = gls.New(false)
+	shardingCache = gls.New(true)
 }
 
 func TestSingle(t *testing.T) {
@@ -27,7 +28,7 @@ func TestSharding(t *testing.T) {
 	testCache(shardingCache, t)
 }
 
-func testCache(c Cache, t *testing.T) {
+func testCache(c gls.Cache, t *testing.T) {
 	counter.Set(counterStart)
 	for i := 0; i < 1000; i++ {
 		str := counter.Next().String()

@@ -24,7 +24,7 @@ type Cache interface {
 
 type single struct {
 	lock sync.RWMutex
-	data map[int64]map[string]interface{}
+	data map[uint64]map[string]interface{}
 }
 
 func (s *single) All() (kvs map[string]interface{}, ok bool) {
@@ -143,14 +143,14 @@ func (s *sharding) shard() *single {
 func New(shardingMode bool) Cache {
 	if !shardingMode {
 		return &single{
-			data: make(map[int64]map[string]interface{}),
+			data: make(map[uint64]map[string]interface{}),
 		}
 	}
 	n := runtime.NumCPU()
 	c := sharding(make([]*single, n))
 	for i := 0; i < n; i++ {
 		c[i] = &single{
-			data: make(map[int64]map[string]interface{}),
+			data: make(map[uint64]map[string]interface{}),
 		}
 	}
 	return &c
